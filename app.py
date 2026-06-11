@@ -191,15 +191,22 @@ with tab2:
         # Combine into our exact 8-column model input vector
         input_vector = np.array([t1_feats + t2_feats], dtype=np.float32)
         
-        # Run inference based on sidebar choice
         if model_choice == "XGBoost (Sharp Trees)":
             import joblib
+            import os
+            
             try:
-                xgb = joblib.load("baseline_xgb_model.pkl")
+                # Dynamically locate the absolute path to your file on the cloud server
+                base_path = os.path.dirname(__file__)
+                model_path = os.path.join(base_path, "baseline_xgb_model.pkl")
+                
+                xgb = joblib.load(model_path)
                 probs = xgb.predict_proba(input_vector)[0]
-            except:
-                # If file lock issues happen in Streamlit, fallback to smart stat evaluation
-                probs = [0.3, 0.1, 0.6] if t1_feats[2] > t2_feats[2] else [0.6, 0.1, 0.3]
+            except Exception as e:
+                # Print the exact error to the Streamlit cloud log console for debugging
+                st.sidebar.error(f"Model Load Error: {str(e)}")
+                # Balanced fallback so your simulation loop doesn't completely halt
+                probs = [0.35, 0.20, 0.45]
         else:
             # For the Neural Network, we can reference your trained memory model variable
             try:
