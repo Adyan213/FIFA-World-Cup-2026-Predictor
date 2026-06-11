@@ -2,6 +2,7 @@
 
 An end-to-end quantitative sports analytics web application that forecasts match probabilities and simulates the expanded 48-team tournament trajectory using machine learning.
 
+🔗 **[Live Demo Link](https://fifa-world-cup-2026-predictor-mtu3qnzrb2wgk3nbecwwko.streamlit.app/)**
 
 ## 🚀 Key Architectural Features
 
